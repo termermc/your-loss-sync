@@ -57,6 +57,11 @@ var Translations = map[string]map[string]string{
 		"es-419": "Guardar",
 		"zh-cn":  "保存",
 	},
+	"general.error": {
+		"en-us":  "Error",
+		"es-419": "Error",
+		"zh-cn":  "错误",
+	},
 
 	"widget.file-picker.select-file": {
 		"en-us":  "Select File",
@@ -109,6 +114,11 @@ var Translations = map[string]map[string]string{
 		"en-us":  "Settings",
 		"es-419": "Ajustes",
 		"zh-cn":  "设置",
+	},
+	"shell.tab.in-progress": {
+		"en-us":  "In Progress ($1/$2)",
+		"es-419": "En progreso ($1/$2)",
+		"zh-cn":  "进行中 ($1/$2)",
 	},
 
 	"config.error.unsupported-version": {
@@ -283,5 +293,47 @@ var Translations = map[string]map[string]string{
 		"en-us":  "Profile is in use by a sync. Delete syncs using this profile first.",
 		"es-419": "El perfil está en uso por una sincronización. Elimina primero las sincronizaciones que usan este perfil.",
 		"zh-cn":  "配置文件正在被同步使用。先删除同步使用的配置文件。",
+	},
+
+	"tab.progress.start": {
+		"en-us":  "Start",
+		"es-419": "Iniciar",
+		"zh-cn":  "开始",
+	},
+	"tab.progress.cancel": {
+		"en-us":  "Cancel",
+		"es-419": "Cancelar",
+		"zh-cn":  "取消",
+	},
+	"tab.progress.status-label": {
+		"en-us":  "Completed: $1/$2, failed: $3",
+		"es-419": "Completado: $1/$2, fallidos: $3",
+		"zh-cn":  "已完成: $1/$2, 失败: $3",
+	},
+
+	"sync.scanning-source": {
+		"en-us":  "Scanning source directory...",
+		"es-419": "Escaneando directorio de origen...",
+		"zh-cn":  "正在扫描源目录...",
+	},
+	"sync.copying": {
+		"en-us":  "Copying $1",
+		"es-419": "Copiando $1",
+		"zh-cn":  "正在复制 $1",
+	},
+	"sync.transcoding": {
+		"en-us":  "Transcoding $1",
+		"es-419": "Transcodificando $1",
+		"zh-cn":  "正在转码 $1",
+	},
+	"sync.path-already-exists": {
+		"en-us":  "Path $1 already exists, skipping",
+		"es-419": "La ruta $1 ya existe, se omite",
+		"zh-cn":  "路径 $1 已存在，将跳过",
+	},
+	"sync.done": {
+		"en-us":  "Done (total: $1, completed: $2, failed: $3)",
+		"es-419": "Hecho (total: $1, completados: $2, fallidos: $3)",
+		"zh-cn":  "完成 (总计: $1, 已完成: $2, 失败: $3)",
 	},
 }

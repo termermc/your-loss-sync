@@ -99,7 +99,7 @@ var SupportedOutputFormats = map[int]OutputFormat{
 		IsLossless:       true,
 		Name:             "AIFF",
 		Extension:        "aif",
-		FfmpegEncoder:    "pcm_s16le",
+		FfmpegEncoder:    "pcm_s16be",
 		SupportsMetadata: true, // Limit, seems to only support title and comment
 		SupportsArtwork:  false,
 		SuggestedBitrate: 0,

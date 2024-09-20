@@ -36,6 +36,8 @@ func EscapeFilename(filename string) string {
 			builder.WriteString("_＜")
 		case '>':
 			builder.WriteString("_＞")
+		default:
+			builder.WriteRune(r)
 		}
 	}
 

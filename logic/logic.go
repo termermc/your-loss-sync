@@ -7,6 +7,7 @@ import (
 	"github.com/termermc/your-loss-sync/lang"
 	"io"
 	"os"
+	"sync/atomic"
 )
 
 // AppState is the state of the application.
@@ -15,6 +16,12 @@ type AppState struct {
 	ConfigDir  string
 	ConfigFile string
 	Locale     lang.Locale
+	Progress   struct {
+		Sync      atomic.Pointer[config.SyncConfig]
+		Completed atomic.Int64
+		Failed    atomic.Int64
+		Total     atomic.Int64
+	}
 }
 
 // Save saves the application state to disk, including configuration.
