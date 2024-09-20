@@ -95,7 +95,7 @@ func StartSync(s *AppState, sync *config.SyncConfig, logOut chan string) {
 		concurrency = 1
 	}
 
-	fileChan := make(chan string, 10_000) // Arbitrarily large buffer since we want to calculate the total number of files
+	fileChan := make(chan string, 100_000) // Arbitrarily large buffer since we want to calculate the total number of files
 	doneChan := make(chan struct{}, concurrency)
 
 	for i := 0; i < concurrency; i++ {
