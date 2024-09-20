@@ -4,9 +4,12 @@ import (
 	"io/fs"
 	"path/filepath"
 	"strings"
+	"unicode/utf8"
 )
 
 // EscapeFilename escapes a filename so that it can be safely used on most filesystems.
+// Do not use on paths, only use on filenames.
+// The filenames will be truncated to 255 characters if they are longer.
 func EscapeFilename(filename string) string {
 	builder := strings.Builder{}
 
@@ -46,6 +49,18 @@ func EscapeFilename(filename string) string {
 	// Windows doesn't allow folders to end with a dot
 	if strings.HasSuffix(res, ".") {
 		res += "_"
+	}
+
+	// Truncate to 255 characters if the filename is longer.
+	// Try to preserve the extension if possible.
+	if runeCount := utf8.RuneCountInString(res); runeCount > 255 {
+		ext := filepath.Ext(res)
+		if ext == "" {
+			res = res[:255]
+		} else {
+			withoutExt := res[:len(res)-len(ext)]
+			res = withoutExt[:255-len(ext)] + ext
+		}
 	}
 
 	return res
