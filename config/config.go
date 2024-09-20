@@ -96,6 +96,18 @@ func (c *Config) GetProfile(name string) *OutputProfile {
 	return nil
 }
 
+// GetProfileIndex returns the index of the profile with the specified name.
+// If no profile with the specified name exists, -1 will be returned.
+func (c *Config) GetProfileIndex(name string) int {
+	for i, profile := range c.Profiles {
+		if profile.Name == name {
+			return i
+		}
+	}
+
+	return -1
+}
+
 // GetSync returns the sync with the specified name.
 // If no sync with the specified name exists, nil will be returned.
 func (c *Config) GetSync(name string) *SyncConfig {

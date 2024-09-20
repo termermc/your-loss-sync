@@ -1,9 +1,11 @@
 package logic
 
 import (
+	"errors"
 	"github.com/termermc/your-loss-sync/config"
 	"github.com/termermc/your-loss-sync/config/json"
 	"github.com/termermc/your-loss-sync/lang"
+	"io"
 	"os"
 )
 
@@ -60,7 +62,23 @@ func Init() (*AppState, error) {
 
 	cfg, err := json.DeserializeFromJson(cfgFile)
 	if err != nil {
-		return nil, err
+		if errors.Is(err, io.EOF) {
+			// Try to restore the backup and try again
+			cfgBakPath := cfgPath + ".bak"
+			err = os.Rename(cfgBakPath, cfgPath)
+			if err != nil {
+				return nil, err
+			}
+
+			println("Restored backup config")
+
+			cfg, err = json.DeserializeFromJson(cfgFile)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			return nil, err
+		}
 	}
 
 	return &AppState{

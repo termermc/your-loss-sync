@@ -1,20 +1,9 @@
 package config
 
-// OutputFormatType is an output format type.
-type OutputFormatType string
-
-const (
-	// OutputFormatTypeLossy is a lossy output format type.
-	OutputFormatTypeLossy OutputFormatType = "lossy"
-
-	// OutputFormatTypeLossless is a lossless output format type.
-	OutputFormatTypeLossless OutputFormatType = "lossless"
-)
-
 // OutputFormat is an output format.
 type OutputFormat struct {
-	// The format type.
-	Type OutputFormatType
+	// Whether the format is lossless.
+	IsLossless bool
 
 	// The format name.
 	Name string
@@ -53,8 +42,8 @@ func (f OutputFormat) GetId() (int, bool) {
 // A map is used instead of a slice to allow for reordering or removal without changing IDs.
 var SupportedOutputFormats = map[int]OutputFormat{
 	0: {
-		Type:             OutputFormatTypeLossy,
-		Name:             "mp3",
+		IsLossless:       false,
+		Name:             "MP3",
 		Extension:        "mp3",
 		FfmpegEncoder:    "libmp3lame",
 		SupportsMetadata: true,
@@ -62,8 +51,8 @@ var SupportedOutputFormats = map[int]OutputFormat{
 		SuggestedBitrate: 320000,
 	},
 	1: {
-		Type:             OutputFormatTypeLossless,
-		Name:             "flac",
+		IsLossless:       true,
+		Name:             "FLAC",
 		Extension:        "flac",
 		FfmpegEncoder:    "flac",
 		SupportsMetadata: true,
@@ -71,8 +60,8 @@ var SupportedOutputFormats = map[int]OutputFormat{
 		SuggestedBitrate: 0,
 	},
 	2: {
-		Type:             OutputFormatTypeLossless,
-		Name:             "wav",
+		IsLossless:       true,
+		Name:             "WAV",
 		Extension:        "wav",
 		FfmpegEncoder:    "pcm_s16le",
 		SupportsMetadata: true,
@@ -80,8 +69,8 @@ var SupportedOutputFormats = map[int]OutputFormat{
 		SuggestedBitrate: 0,
 	},
 	3: {
-		Type:             OutputFormatTypeLossy,
-		Name:             "opus",
+		IsLossless:       false,
+		Name:             "Opus",
 		Extension:        "opus",
 		FfmpegEncoder:    "libopus",
 		SupportsMetadata: true,
@@ -89,8 +78,8 @@ var SupportedOutputFormats = map[int]OutputFormat{
 		SuggestedBitrate: 120000,
 	},
 	4: {
-		Type:             OutputFormatTypeLossy,
-		Name:             "aac",
+		IsLossless:       false,
+		Name:             "AAC",
 		Extension:        "m4a",
 		FfmpegEncoder:    "aac",
 		SupportsMetadata: true,
@@ -98,8 +87,8 @@ var SupportedOutputFormats = map[int]OutputFormat{
 		SuggestedBitrate: 224000,
 	},
 	5: {
-		Type:             OutputFormatTypeLossless,
-		Name:             "alac",
+		IsLossless:       true,
+		Name:             "ALAC",
 		Extension:        "m4a",
 		FfmpegEncoder:    "alac",
 		SupportsMetadata: true,
@@ -107,14 +96,26 @@ var SupportedOutputFormats = map[int]OutputFormat{
 		SuggestedBitrate: 0,
 	},
 	6: {
-		Type:             OutputFormatTypeLossless,
-		Name:             "aiff",
+		IsLossless:       true,
+		Name:             "AIFF",
 		Extension:        "aif",
 		FfmpegEncoder:    "pcm_s16le",
 		SupportsMetadata: true, // Limit, seems to only support title and comment
 		SupportsArtwork:  false,
 		SuggestedBitrate: 0,
 	},
+}
+
+// GetOutputFormat returns the output format with the specified name.
+// If no format with the specified name exists, nil will be returned.
+func GetOutputFormat(name string) *OutputFormat {
+	for _, format := range SupportedOutputFormats {
+		if format.Name == name {
+			return &format
+		}
+	}
+
+	return nil
 }
 
 // OutputProfile is an output encoding profile.

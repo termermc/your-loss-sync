@@ -18,7 +18,7 @@ func (g Gui) initMainWindow() {
 	})
 
 	syncsTab := syncstab.New(g.State, w)
-	profilesTab := profilestab.New()
+	profilesTab := profilestab.New(g.State, w)
 	settingsTab := settingstab.New()
 
 	tabs := container.NewAppTabs(
@@ -27,6 +27,10 @@ func (g Gui) initMainWindow() {
 		container.NewTabItem(g.State.Locale.Tr("shell.tab.settings"), settingsTab.Widget),
 	)
 	tabs.SetTabLocation(container.TabLocationTop)
+	tabs.OnSelected = func(_ *container.TabItem) {
+		syncsTab.ResetForm()
+		profilesTab.ResetForm()
+	}
 
 	w.SetContent(tabs)
 

@@ -13,57 +13,38 @@ import (
 )
 
 type SyncsTab struct {
-	s      *logic.AppState
-	Widget fyne.CanvasObject
+	Widget    fyne.CanvasObject
+	setupForm func()
 }
 
 // New creates a new SyncsTab
 func New(s *logic.AppState, parent fyne.Window) SyncsTab {
 	var deleteSyncById func(id int)
 
-	list := widget.NewList(
+	list := ylwidget.NewTextList(
 		func() int {
 			// Length
 
 			return len(s.Config.Syncs)
 		},
-		func() fyne.CanvasObject {
-			// Create item
-
-			scroll := container.NewHScroll(container.NewHBox())
-			scroll.SetMinSize(fyne.NewSize(140, 40))
-			return scroll
-		},
-		func(id widget.ListItemID, o fyne.CanvasObject) {
+		func(id widget.ListItemID) ylwidget.TextListItemData {
 			// Update item
 
-			label := widget.NewLabel("")
-			btn := widget.NewButton("✕", func() {
-				deleteSyncById(id)
-			})
-
-			scroll := o.(*container.Scroll)
-			hbox := scroll.Content.(*fyne.Container)
-
-			labelScroll := container.NewHScroll(label)
-			labelScroll.SetMinSize(fyne.NewSize(165, 40))
-			hbox.Objects = []fyne.CanvasObject{
-				labelScroll,
-				btn,
+			return ylwidget.TextListItemData{
+				Label:     s.Config.Syncs[id].Name,
+				CanDelete: true,
+				OnDelete: func() {
+					deleteSyncById(id)
+				},
 			}
-
-			label.SetText(s.Config.Syncs[id].Name)
-			_ = btn
-
-			hbox.Refresh()
 		},
 	)
 
 	deleteSyncById = func(id int) {
 		sync := s.Config.Syncs[id]
 
-		title := s.Locale.Tr("tabs.syncs.delete-confirm.title")
-		desc := s.Locale.Tr("tabs.syncs.delete-confirm.description", sync.Name)
+		title := s.Locale.Tr("tab.syncs.delete-confirm.title")
+		desc := s.Locale.Tr("tab.syncs.delete-confirm.description", sync.Name)
 		dialog.ShowConfirm(title, desc, func(b bool) {
 			if !b {
 				return
@@ -76,8 +57,8 @@ func New(s *logic.AppState, parent fyne.Window) SyncsTab {
 				return
 			}
 
-			list.UnselectAll()
-			list.Refresh()
+			list.Widget.UnselectAll()
+			list.Widget.Refresh()
 		}, parent)
 	}
 
@@ -92,15 +73,9 @@ func New(s *logic.AppState, parent fyne.Window) SyncsTab {
 	_ = srcDirPicker.IsDirectoryPicker.Set(true)
 	destDirPicker := ylwidget.NewFilePicker(parent, s.Locale)
 	_ = destDirPicker.IsDirectoryPicker.Set(true)
-	profileNames := make([]string, 0, len(s.Config.Profiles))
-	for _, profile := range s.Config.Profiles {
-		profileNames = append(profileNames, profile.Name)
-	}
-	profileSelector := widget.NewSelect(profileNames, func(_ string) {})
+	profileSelector := widget.NewSelect([]string{}, func(_ string) {})
 	escapeFilenamesCheck := widget.NewCheck(s.Locale.Tr("tab.syncs.form.escape-filenames"), func(_ bool) {})
-	escapeFilenamesCheck.SetChecked(true)
 	reencodeSameFormatCheck := widget.NewCheck(s.Locale.Tr("tab.syncs.form.reencode-same-format"), func(_ bool) {})
-	reencodeSameFormatCheck.SetChecked(false)
 
 	var onSave func()
 
@@ -112,6 +87,12 @@ func New(s *logic.AppState, parent fyne.Window) SyncsTab {
 
 	setupForm := func() {
 		errMsg.SetText("")
+
+		profileNames := make([]string, 0, len(s.Config.Profiles))
+		for _, profile := range s.Config.Profiles {
+			profileNames = append(profileNames, profile.Name)
+		}
+		profileSelector.SetOptions(profileNames)
 
 		if targetSync == nil {
 			nameEntry.SetText("")
@@ -151,12 +132,12 @@ func New(s *logic.AppState, parent fyne.Window) SyncsTab {
 	form.Append("", errMsg)
 
 	createBtn := widget.NewButton(s.Locale.Tr("tab.syncs.create"), func() {
-		list.UnselectAll()
+		list.Widget.UnselectAll()
 		targetSync = nil
 		setupForm()
 	})
 
-	listScroll := container.NewScroll(list)
+	listScroll := container.NewScroll(list.Widget)
 	listScroll.SetMinSize(fyne.NewSize(200, 500))
 
 	formScroll := container.NewScroll(
@@ -165,7 +146,7 @@ func New(s *logic.AppState, parent fyne.Window) SyncsTab {
 			form,
 		),
 	)
-	formScroll.SetMinSize(fyne.NewSize(400, 500))
+	formScroll.SetMinSize(fyne.NewSize(600, 500))
 
 	cont := container.NewHBox(
 		container.NewVBox(
@@ -175,7 +156,7 @@ func New(s *logic.AppState, parent fyne.Window) SyncsTab {
 		formScroll,
 	)
 
-	list.OnSelected = func(id widget.ListItemID) {
+	list.Widget.OnSelected = func(id widget.ListItemID) {
 		targetSync = s.Config.GetSync(s.Config.Syncs[id].Name)
 		setupForm()
 	}
@@ -284,12 +265,17 @@ func New(s *logic.AppState, parent fyne.Window) SyncsTab {
 			return
 		}
 
-		list.Refresh()
-		list.Select(s.Config.GetSyncIndex(nameEntry.Text))
+		list.Widget.Refresh()
+		list.Widget.Select(s.Config.GetSyncIndex(nameEntry.Text))
 	}
 
 	return SyncsTab{
-		s:      s,
-		Widget: cont,
+		Widget:    cont,
+		setupForm: setupForm,
 	}
+}
+
+// ResetForm resets the form to its default state.
+func (s *SyncsTab) ResetForm() {
+	s.setupForm()
 }

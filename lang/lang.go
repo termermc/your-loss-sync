@@ -138,12 +138,12 @@ var Translations = map[string]map[string]string{
 		"es-419": "Crear Sincronización",
 		"zh-cn":  "创建同步",
 	},
-	"tabs.syncs.delete-confirm.title": {
+	"tab.syncs.delete-confirm.title": {
 		"en-us":  "Delete Sync",
 		"es-419": "Eliminar Sincronización",
 		"zh-cn":  "删除同步",
 	},
-	"tabs.syncs.delete-confirm.description": {
+	"tab.syncs.delete-confirm.description": {
 		"en-us":  "Are you sure you want to delete the sync \"$1\"?",
 		"es-419": "¿Estás seguro de que quieres eliminar la sincronización \"$1\"?",
 		"zh-cn":  "您确定要删除同步 \"$1\"？",
@@ -217,5 +217,71 @@ var Translations = map[string]map[string]string{
 		"en-us":  "Source and destination directories cannot be the same",
 		"es-419": "Los directorios de origen y destino no pueden ser los mismos",
 		"zh-cn":  "源和目标目录不能相同",
+	},
+
+	"tab.profiles.create": {
+		"en-us":  "Create Profile",
+		"es-419": "Crear Perfil",
+		"zh-cn":  "创建配置文件",
+	},
+	"tab.profiles.form.name": {
+		"en-us":  "Name",
+		"es-419": "Nombre",
+		"zh-cn":  "名称",
+	},
+	"tab.profiles.form.format": {
+		"en-us":  "Format",
+		"es-419": "Formato",
+		"zh-cn":  "格式",
+	},
+	"tab.profiles.form.is-lossless": {
+		"en-us":  "Lossless",
+		"es-419": "Sin pérdidas",
+		"zh-cn":  "无损",
+	},
+	"tab.profiles.form.supports-metadata": {
+		"en-us":  "Supports Metadata",
+		"es-419": "Soporta metadatos",
+		"zh-cn":  "支持元数据",
+	},
+	"tab.profiles.form.supports-artwork": {
+		"en-us":  "Supports Artwork",
+		"es-419": "Soporta arte",
+		"zh-cn":  "支持艺术",
+	},
+	"tab.profiles.form.bitrate": {
+		"en-us":  "Bitrate",
+		"es-419": "Bitrate",
+		"zh-cn":  "比特率",
+	},
+	"tab.profiles.form.error.invalid-bitrate": {
+		"en-us":  "Invalid bitrate",
+		"es-419": "Bitrate inválido",
+		"zh-cn":  "无效的比特率",
+	},
+	"tab.profiles.form.error.missing-name": {
+		"en-us":  "Name is required",
+		"es-419": "Se requiere el nombre",
+		"zh-cn":  "名称为必填项",
+	},
+	"tab.profiles.form.error.name-exists": {
+		"en-us":  "A profile with the same name already exists",
+		"es-419": "Ya existe un perfil con el mismo nombre",
+		"zh-cn":  "同名配置文件已存在",
+	},
+	"tab.profiles.delete-confirm.title": {
+		"en-us":  "Delete Profile",
+		"es-419": "Eliminar Perfil",
+		"zh-cn":  "删除配置文件",
+	},
+	"tab.profiles.delete-confirm.description": {
+		"en-us":  "Are you sure you want to delete the profile \"$1\"?",
+		"es-419": "¿Estás seguro de que quieres eliminar el perfil \"$1\"?",
+		"zh-cn":  "您确定要删除配置文件 \"$1\"？",
+	},
+	"tab.profiles.error.in-use": {
+		"en-us":  "Profile is in use by a sync. Delete syncs using this profile first.",
+		"es-419": "El perfil está en uso por una sincronización. Elimina primero las sincronizaciones que usan este perfil.",
+		"zh-cn":  "配置文件正在被同步使用。先删除同步使用的配置文件。",
 	},
 }
