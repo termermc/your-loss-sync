@@ -47,6 +47,10 @@ type SyncConfig struct {
 	// The output profile to use.
 	Profile *OutputProfile
 
+	// Skip files larger than this size (in bytes).
+	// Default: 0
+	SkipFilesLargerThan int64
+
 	// Whether to escape filenames.
 	// Default: true
 	EscapeFilenames bool

@@ -27,6 +27,7 @@ func doFfprobe(bin string, filePath string) (ffprobeResult, error) {
 		bin,
 		"-print_format", "json",
 		"-show_streams",
+		"-threads", "1",
 		filePath,
 	)
 	out, err := cmd.Output()
@@ -62,6 +63,7 @@ func StartSync(s *AppState, sync *config.SyncConfig, logOut chan string) {
 	s.Progress.Sync.Store(sync)
 	s.Progress.Completed.Store(0)
 	s.Progress.Total.Store(0)
+	s.Progress.Skipped.Store(0)
 	s.Progress.Failed.Store(0)
 
 	checkErr := func(err error) bool {
@@ -266,7 +268,17 @@ func StartSync(s *AppState, sync *config.SyncConfig, logOut chan string) {
 			return err
 		}
 
-		if d.IsDir() {
+		info, err := d.Info()
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			return nil
+		}
+		skipBytes := sync.SkipFilesLargerThan
+		if skipBytes > 0 && info.Size() > skipBytes {
+			s.Progress.Skipped.Add(1)
 			return nil
 		}
 
@@ -289,6 +301,7 @@ func StartSync(s *AppState, sync *config.SyncConfig, logOut chan string) {
 		"sync.done",
 		strconv.Itoa(int(s.Progress.Total.Load())),
 		strconv.Itoa(int(s.Progress.Completed.Load())),
+		strconv.Itoa(int(s.Progress.Skipped.Load())),
 		strconv.Itoa(int(s.Progress.Failed.Load())),
 	)
 	s.Progress.Sync.Store(nil)

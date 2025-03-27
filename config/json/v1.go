@@ -8,12 +8,13 @@ type V1OutputProfile struct {
 
 // V1Sync is the JSON format version 1 representation of a sync.
 type V1Sync struct {
-	Name               string `json:"name"`
-	SourceDir          string `json:"sourceDir"`
-	DestDir            string `json:"destDir"`
-	ProfileName        string `json:"profileName"`
-	EscapeFilenames    bool   `json:"escapeFilenames"`
-	ReencodeSameFormat bool   `json:"reencodeSameFormat"`
+	Name                string `json:"name"`
+	SourceDir           string `json:"sourceDir"`
+	DestDir             string `json:"destDir"`
+	ProfileName         string `json:"profileName"`
+	EscapeFilenames     bool   `json:"escapeFilenames"`
+	ReencodeSameFormat  bool   `json:"reencodeSameFormat"`
+	SkipFilesLargerThan int64  `json:"skipFilesLargerThan"`
 }
 
 // V1 is the JSON format version 1 representation of the application configuration.

@@ -19,6 +19,7 @@ type AppState struct {
 	Progress   struct {
 		Sync      atomic.Pointer[config.SyncConfig]
 		Completed atomic.Int64
+		Skipped   atomic.Int64
 		Failed    atomic.Int64
 		Total     atomic.Int64
 	}

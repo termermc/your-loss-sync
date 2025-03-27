@@ -62,6 +62,7 @@ func New(s *logic.AppState, parent fyne.Window) InProgressTab {
 				"tab.progress.status-label",
 				strconv.Itoa(int(s.Progress.Completed.Load())),
 				strconv.Itoa(int(s.Progress.Total.Load())),
+				strconv.Itoa(int(s.Progress.Skipped.Load())),
 				strconv.Itoa(int(s.Progress.Failed.Load()))),
 			)
 

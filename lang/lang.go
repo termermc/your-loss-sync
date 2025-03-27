@@ -74,6 +74,13 @@ var Translations = map[string]map[string]string{
 		"it-it":  "Errore",
 		"zh-cn":  "错误",
 	},
+	"general.warning": {
+		"en-us":  "Warning",
+		"es-419": "Advertencia",
+		"fr-fr":  "Avertissement",
+		"it-it":  "Avviso",
+		"zh-cn":  "警告",
+	},
 
 	"widget.file-picker.select-file": {
 		"en-us":  "Select File",
@@ -234,6 +241,13 @@ var Translations = map[string]map[string]string{
 		"it-it":  "Profilo",
 		"zh-cn":  "配置文件",
 	},
+	"tab.syncs.form.skip-files-larger-than": {
+		"en-us":  "Skip Files Larger Than",
+		"es-419": "Omitir archivos más grandes que",
+		"fr-fr":  "Ignorer les fichiers plus gros que",
+		"it-it":  "Salta file più grandi di",
+		"zh-cn":  "跳过大于",
+	},
 	"tab.syncs.form.escape-filenames": {
 		"en-us":  "Replace invalid characters in filenames?",
 		"es-419": "¿Reemplazar caracteres no válidos en los nombres de archivos?",
@@ -303,6 +317,20 @@ var Translations = map[string]map[string]string{
 		"fr-fr":  "Le repertoire source et cible ne peuvent etre le meme repertoire",
 		"it-it":  "La cartella sorgente e di destinazione non possono essere la stessa cartella",
 		"zh-cn":  "源和目标目录不能相同",
+	},
+	"tab.syncs.form.error.unable-to-parse-file-size": {
+		"en-us":  "Unable to parse file size: $1",
+		"es-419": "No se puede analizar el tamaño del archivo: $1",
+		"fr-fr":  "Impossible d'analyser la taille du fichier : $1",
+		"it-it":  "Impossibile analizzare la dimensione del file: $1",
+		"zh-cn":  "无法解析文件大小：$1",
+	},
+	"tab.syncs.form.warning.destination-fat32-file-size": {
+		"en-us":  "The destination directory is on a FAT32 filesystem, which cannot store files larger than 4 GiB.\n\nYou may want to skip files larger than 4 GiB, otherwise there will be errors when syncing.\n\nYour changes have been saved anyway.",
+		"es-419": "El directorio de destino está en un sistema de archivos FAT32, que no puede almacenar archivos más grandes de 4 GiB.\n\nEs posible que desee omitir archivos más grandes de 4 GiB, de lo contrario, se producirán errores al sincronizar.\n\nTus cambios se han guardado de todos modos.",
+		"fr-fr":  "Le répertoire de destination est sur un système de fichiers FAT32, qui ne peut pas stocker des fichiers plus gros que 4 GiB.\n\nVous pouvez vouloir ignorer les fichiers plus gros que 4 GiB, sinon il y aura des erreurs lors de la synchronisation.\n\nVotre changement a été sauvegardé de toute façon.",
+		"it-it":  "La directory di destinazione è su un filesystem FAT32, che non può memorizzare file più grandi di 4 GiB.\n\nPotresti voler saltare i file più grandi di 4 GiB, altrimenti ci saranno errori durante la sincronizzazione.\n\nI tuoi cambiamenti sono stati salvati comunque.",
+		"zh-cn":  "目标目录在FAT32文件系统上，它无法存储大于4GiB的文件。\n\n您可能希望跳过大于4GiB的文件，否则在同步时会出现错误。\n\n尽管您的更改已经被保存。",
 	},
 
 	"tab.profiles.create": {
@@ -412,11 +440,11 @@ var Translations = map[string]map[string]string{
 		"zh-cn":  "取消",
 	},
 	"tab.progress.status-label": {
-		"en-us":  "Completed: $1/$2, failed: $3",
-		"es-419": "Completado: $1/$2, fallidos: $3",
-		"fr-fr":  "Succes : $1/$2, echec(s) : $3",
-		"it-it":  "Riuscito/i: $1/$2, fallimento/i: $3",
-		"zh-cn":  "已完成: $1/$2, 失败: $3",
+		"en-us":  "Completed: $1/$2, skipped: $3, failed: $4",
+		"es-419": "Completado: $1/$2, omitidos: $3, fallidos: $4",
+		"fr-fr":  "Succes : $1/$2, omission(s) : $3, echec(s) : $4",
+		"it-it":  "Riuscito/i: $1/$2, omesso/i: $3, fallimento/i: $4",
+		"zh-cn":  "已完成: $1/$2, 跳过: $3, 失败: $4",
 	},
 
 	"sync.scanning-source": {
@@ -448,10 +476,46 @@ var Translations = map[string]map[string]string{
 		"zh-cn":  "路径 $1 已存在，将跳过",
 	},
 	"sync.done": {
-		"en-us":  "Done (total: $1, completed: $2, failed: $3)",
-		"es-419": "Hecho (total: $1, completados: $2, fallidos: $3)",
-		"fr-fr":  "Fini (total : $1, succes : $2, echec(s) : $3)",
-		"it-it":  "Finito (totale: $1, riuscito/i: $2, fallimento/i: $3)",
-		"zh-cn":  "完成 (总计: $1, 已完成: $2, 失败: $3)",
+		"en-us":  "Done (total: $1, completed: $2, skipped: $3, failed: $4)",
+		"es-419": "Hecho (total: $1, completados: $2, omitidos: $3, fallidos: $4)",
+		"fr-fr":  "Fini (total : $1, succes : $2, omission(s) : $3, echec(s) : $4)",
+		"it-it":  "Finito (totale: $1, riuscito/i: $2, omesso/i: $3, fallimento/i: $4)",
+		"zh-cn":  "完成 (总计: $1, 已完成: $2, 跳过: $3, 失败: $4)",
+	},
+
+	"parse.error.number-cannot-be-negative": {
+		"en-us":  "Number cannot be negative",
+		"es-419": "El número no puede ser negativo",
+		"fr-fr":  "Le nombre ne peut pas être négatif",
+		"it-it":  "Il numero non può essere negativo",
+		"zh-cn":  "数字不能为负数",
+	},
+	"parse.error.missing-unit-suffix": {
+		"en-us":  "Missing unit suffix (such as MiB or GiB)",
+		"es-419": "Falta el sufijo de unidad (como MiB o GiB)",
+		"fr-fr":  "Suffixe d'unité manquant (tel que MiB ou GiB)",
+		"it-it":  "Manca il suffisso di unità (come MiB o GiB)",
+		"zh-cn":  "缺少单位后缀（例如MiB或GiB）",
+	},
+	"parse.error.missing-number": {
+		"en-us":  "Missing number",
+		"es-419": "Falta el número",
+		"fr-fr":  "Nombre manquant",
+		"it-it":  "Manca il numero",
+		"zh-cn":  "缺少数字",
+	},
+	"parse.error.please-use-dot-for-decimal-points": {
+		"en-us":  "Please use a \".\" for decimal points",
+		"es-419": "Por favor, use un \".\" para los puntos decimales",
+		"fr-fr":  "Veuillez utiliser un \".\" pour les points décimaux",
+		"it-it":  "Utilizza un \".\" per i punti decimali",
+		"zh-cn":  "请使用“.”作为小数点",
+	},
+	"parse.error.unknown-unit-x": {
+		"en-us":  "Unknown unit \"$1\"",
+		"es-419": "Unidad desconocida \"$1\"",
+		"fr-fr":  "Unité inconnue \"$1\"",
+		"it-it":  "Unità sconosciuta \"$1\"",
+		"zh-cn":  "未知单位“$1”",
 	},
 }

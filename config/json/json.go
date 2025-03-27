@@ -89,12 +89,13 @@ func DeserializeFromJson(reader io.Reader) (*config.Config, error) {
 			}
 
 			resSyncs[i] = &config.SyncConfig{
-				Name:               v1Sync.Name,
-				SourceDir:          v1Sync.SourceDir,
-				DestDir:            v1Sync.DestDir,
-				Profile:            profile,
-				EscapeFilenames:    v1Sync.EscapeFilenames,
-				ReencodeSameFormat: v1Sync.ReencodeSameFormat,
+				Name:                v1Sync.Name,
+				SourceDir:           v1Sync.SourceDir,
+				DestDir:             v1Sync.DestDir,
+				Profile:             profile,
+				EscapeFilenames:     v1Sync.EscapeFilenames,
+				ReencodeSameFormat:  v1Sync.ReencodeSameFormat,
+				SkipFilesLargerThan: v1Sync.SkipFilesLargerThan,
 			}
 		}
 
@@ -121,12 +122,13 @@ func SerializeToJson(config *config.Config, writer io.Writer) error {
 
 	for i, sync := range config.Syncs {
 		res.Syncs[i] = V1Sync{
-			Name:               sync.Name,
-			SourceDir:          sync.SourceDir,
-			DestDir:            sync.DestDir,
-			ProfileName:        sync.Profile.Name,
-			EscapeFilenames:    sync.EscapeFilenames,
-			ReencodeSameFormat: sync.ReencodeSameFormat,
+			Name:                sync.Name,
+			SourceDir:           sync.SourceDir,
+			DestDir:             sync.DestDir,
+			ProfileName:         sync.Profile.Name,
+			EscapeFilenames:     sync.EscapeFilenames,
+			ReencodeSameFormat:  sync.ReencodeSameFormat,
+			SkipFilesLargerThan: sync.SkipFilesLargerThan,
 		}
 	}
 

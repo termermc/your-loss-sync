@@ -9,6 +9,7 @@ import (
 	"github.com/termermc/your-loss-sync/config"
 	ylwidget "github.com/termermc/your-loss-sync/gui/widget"
 	"github.com/termermc/your-loss-sync/logic"
+	"github.com/termermc/your-loss-sync/util"
 	"os"
 )
 
@@ -74,6 +75,7 @@ func New(s *logic.AppState, parent fyne.Window) SyncsTab {
 	destDirPicker := ylwidget.NewFilePicker(parent, s.Locale)
 	_ = destDirPicker.IsDirectoryPicker.Set(true)
 	profileSelector := widget.NewSelect([]string{}, func(_ string) {})
+	skipFilesLargerThanEntry := widget.NewEntry()
 	escapeFilenamesCheck := widget.NewCheck(s.Locale.Tr("tab.syncs.form.escape-filenames"), func(_ bool) {})
 	reencodeSameFormatCheck := widget.NewCheck(s.Locale.Tr("tab.syncs.form.reencode-same-format"), func(_ bool) {})
 
@@ -103,6 +105,7 @@ func New(s *logic.AppState, parent fyne.Window) SyncsTab {
 			} else {
 				profileSelector.SetSelected("")
 			}
+			skipFilesLargerThanEntry.SetText(util.FormatBytes(4 * 1024 * 1024 * 1024))
 			escapeFilenamesCheck.SetChecked(true)
 			reencodeSameFormatCheck.SetChecked(false)
 
@@ -112,6 +115,8 @@ func New(s *logic.AppState, parent fyne.Window) SyncsTab {
 			_ = srcDirPicker.Path.Set(targetSync.SourceDir)
 			_ = destDirPicker.Path.Set(targetSync.DestDir)
 			profileSelector.SetSelected(targetSync.Profile.Name)
+			skipStr := util.FormatBytes(targetSync.SkipFilesLargerThan)
+			skipFilesLargerThanEntry.SetText(skipStr)
 			escapeFilenamesCheck.SetChecked(targetSync.EscapeFilenames)
 			reencodeSameFormatCheck.SetChecked(targetSync.ReencodeSameFormat)
 
@@ -125,6 +130,7 @@ func New(s *logic.AppState, parent fyne.Window) SyncsTab {
 	form.Append(s.Locale.Tr("tab.syncs.form.source-dir"), srcDirPicker.Widget)
 	form.Append(s.Locale.Tr("tab.syncs.form.dest-dir"), destDirPicker.Widget)
 	form.Append(s.Locale.Tr("tab.syncs.form.profile"), profileSelector)
+	form.Append(s.Locale.Tr("tab.syncs.form.skip-files-larger-than"), skipFilesLargerThanEntry)
 	form.Append("", escapeFilenamesCheck)
 	form.Append("", reencodeSameFormatCheck)
 	form.Append("", layout.NewSpacer())
@@ -237,15 +243,29 @@ func New(s *logic.AppState, parent fyne.Window) SyncsTab {
 			return
 		}
 
+		skipBytes, err := util.ParseBytes(skipFilesLargerThanEntry.Text, s.Locale)
+		if err != nil {
+			errMsg.SetText(s.Locale.Tr("tab.syncs.form.error.unable-to-parse-file-size", err.Error()))
+			return
+		}
+
+		if skipBytes > 4*1024*1024*1024 {
+			isFat32Dest, _ := util.IsPathFat32(destDirPath)
+			if isFat32Dest {
+				dialog.ShowInformation(s.Locale.Tr("general.warning"), s.Locale.Tr("tab.syncs.form.warning.destination-fat32-file-size"), parent)
+			}
+		}
+
 		// Config looks good, save it
 		if targetSync == nil {
 			newSync := &config.SyncConfig{
-				Name:               nameEntry.Text,
-				SourceDir:          srcDirPath,
-				DestDir:            destDirPath,
-				Profile:            s.Config.GetProfile(profileSelector.Selected),
-				EscapeFilenames:    escapeFilenamesCheck.Checked,
-				ReencodeSameFormat: reencodeSameFormatCheck.Checked,
+				Name:                nameEntry.Text,
+				SourceDir:           srcDirPath,
+				DestDir:             destDirPath,
+				Profile:             s.Config.GetProfile(profileSelector.Selected),
+				EscapeFilenames:     escapeFilenamesCheck.Checked,
+				ReencodeSameFormat:  reencodeSameFormatCheck.Checked,
+				SkipFilesLargerThan: skipBytes,
 			}
 
 			s.Config.Syncs = append(s.Config.Syncs, newSync)
@@ -257,6 +277,7 @@ func New(s *logic.AppState, parent fyne.Window) SyncsTab {
 			targetSync.Profile = s.Config.GetProfile(profileSelector.Selected)
 			targetSync.EscapeFilenames = escapeFilenamesCheck.Checked
 			targetSync.ReencodeSameFormat = reencodeSameFormatCheck.Checked
+			targetSync.SkipFilesLargerThan = skipBytes
 		}
 
 		err = s.Save()

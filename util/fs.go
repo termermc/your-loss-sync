@@ -1,8 +1,11 @@
 package util
 
 import (
+	"fmt"
+	"github.com/shirou/gopsutil/v4/disk"
 	"io/fs"
 	"path/filepath"
+	"slices"
 	"strings"
 	"unicode/utf8"
 )
@@ -88,4 +91,46 @@ func ScanDirFilesRecursive(dir string) ([]string, error) {
 	})
 
 	return files, err
+}
+
+var fatNames = []string{
+	"fat",
+	"fat32",
+	"vfat",
+	"msdos",
+}
+
+// IsPathFat32 returns whether a path appears to be on a FAT32 filesystem.
+func IsPathFat32(path string) (bool, error) {
+	// Get absolute path to handle relative paths correctly
+	absPath, err := filepath.Abs(path)
+	if err != nil {
+		return false, fmt.Errorf("failed to get absolute path: %w", err)
+	}
+
+	// Get all partitions
+	partitions, err := disk.Partitions(true)
+	if err != nil {
+		return false, fmt.Errorf("failed to get partitions: %w", err)
+	}
+
+	// Find the longest matching partition mount point
+	var matchingPartition *disk.PartitionStat
+	longestMatch := 0
+
+	for i, partition := range partitions {
+		mountPoint := partition.Mountpoint
+		if strings.HasPrefix(absPath, mountPoint) && len(mountPoint) > longestMatch {
+			longestMatch = len(mountPoint)
+			matchingPartition = &partitions[i]
+		}
+	}
+
+	if matchingPartition == nil {
+		return false, fmt.Errorf("no matching partition found for path: %s", path)
+	}
+
+	// Check if filesystem is FAT32
+	fstype := strings.ToLower(matchingPartition.Fstype)
+	return slices.Contains(fatNames, fstype), nil
 }
