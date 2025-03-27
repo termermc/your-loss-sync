@@ -51,6 +51,9 @@ func EscapeFilename(filename string) string {
 		res += "_"
 	}
 
+	// Strip away any leading or trailing whitespace
+	res = strings.TrimSpace(res)
+
 	// Truncate to 255 characters if the filename is longer.
 	// Try to preserve the extension if possible.
 	if runeCount := utf8.RuneCountInString(res); runeCount > 255 {
