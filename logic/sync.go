@@ -66,12 +66,17 @@ func StartSync(s *AppState, sync *config.SyncConfig, logOut chan string) {
 	s.Progress.Skipped.Store(0)
 	s.Progress.Failed.Store(0)
 
-	checkErr := func(err error) bool {
+	checkErr := func(pathRelative string, err error) bool {
 		if err == nil {
 			return false
 		}
 
-		logOut <- s.Locale.Tr("general.error") + ": " + s.Locale.TrError(err)
+		if pathRelative == "" {
+			logOut <- s.Locale.Tr("general.error") + ": " + s.Locale.TrError(err)
+		} else {
+			logOut <- s.Locale.Tr("sync.error-processing-file-x-y", pathRelative, s.Locale.TrError(err))
+		}
+
 		s.Progress.Failed.Add(1)
 		return true
 	}
@@ -132,7 +137,7 @@ func StartSync(s *AppState, sync *config.SyncConfig, logOut chan string) {
 				// Make dirs
 				if len(pathParts) > 1 {
 					err := os.MkdirAll(filepath.Join(destPath, filepath.Dir(fileRelative)), os.ModePerm)
-					if checkErr(err) {
+					if checkErr(fileRelative, err) {
 						continue
 					}
 				}
@@ -157,7 +162,7 @@ func StartSync(s *AppState, sync *config.SyncConfig, logOut chan string) {
 
 					// Probe the file
 					res, err := doFfprobe(ffprobeBin, srcFilePathFull)
-					if checkErr(err) {
+					if checkErr(fileRelative, err) {
 						continue
 					}
 
@@ -193,7 +198,7 @@ func StartSync(s *AppState, sync *config.SyncConfig, logOut chan string) {
 							"-y",
 						)
 						err = cmd.Run()
-						if checkErr(err) {
+						if checkErr(fileRelative, err) {
 							_ = os.Remove(destTmpPath)
 
 							continue
@@ -201,7 +206,7 @@ func StartSync(s *AppState, sync *config.SyncConfig, logOut chan string) {
 
 						// Successfully transcoded, rename the tmp file
 						err = os.Rename(destTmpPath, destFilePath)
-						if checkErr(err) {
+						if checkErr(fileRelative, err) {
 							_ = os.Remove(destTmpPath)
 
 							continue
@@ -228,20 +233,20 @@ func StartSync(s *AppState, sync *config.SyncConfig, logOut chan string) {
 
 					// Simply copy the file
 					osSrcFile, err := os.Open(srcFilePathFull)
-					if checkErr(err) {
+					if checkErr(fileRelative, err) {
 						_ = os.Remove(destTmpPath)
 						_ = osSrcFile.Close()
 						continue
 					}
 					osDestFile, err := os.Create(destTmpPath)
-					if checkErr(err) {
+					if checkErr(fileRelative, err) {
 						_ = os.Remove(destTmpPath)
 						_ = osSrcFile.Close()
 						_ = osDestFile.Close()
 						continue
 					}
 					_, err = io.Copy(osDestFile, osSrcFile)
-					if checkErr(err) {
+					if checkErr(fileRelative, err) {
 						_ = os.Remove(destTmpPath)
 						_ = osSrcFile.Close()
 						_ = osDestFile.Close()
@@ -253,7 +258,7 @@ func StartSync(s *AppState, sync *config.SyncConfig, logOut chan string) {
 
 					// Successfully copied, rename the tmp file
 					err = os.Rename(destTmpPath, destFilePath)
-					if checkErr(err) {
+					if checkErr(fileRelative, err) {
 						_ = os.Remove(destTmpPath)
 						continue
 					}
@@ -290,7 +295,7 @@ func StartSync(s *AppState, sync *config.SyncConfig, logOut chan string) {
 		return nil
 	})
 	close(fileChan)
-	if checkErr(err) {
+	if checkErr("", err) {
 		return
 	}
 

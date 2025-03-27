@@ -475,6 +475,13 @@ var Translations = map[string]map[string]string{
 		"it-it":  "Il percorso $1 esiste gia', omissione di quello",
 		"zh-cn":  "路径 $1 已存在，将跳过",
 	},
+	"sync.error-processing-file-x-y": {
+		"en-us":  "Error processing path \"$1\": $2",
+		"es-419": "Error procesando la ruta \"$1\": $2",
+		"fr-fr":  "Erreur lors du traitement du chemin \"$1\" : $2",
+		"it-it":  "Errore durante l'elaborazione del percorso \"$1\": $2",
+		"zh-cn":  "处理路径“$1”时出错：$2",
+	},
 	"sync.done": {
 		"en-us":  "Done (total: $1, completed: $2, skipped: $3, failed: $4)",
 		"es-419": "Hecho (total: $1, completados: $2, omitidos: $3, fallidos: $4)",
