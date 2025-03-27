@@ -150,7 +150,8 @@ func StartSync(s *AppState, sync *config.SyncConfig, logOut chan string) {
 					_, err := os.Stat(destFilePath)
 					if err == nil {
 						println(s.Locale.Tr("sync.path-already-exists", fileRelative))
-						s.Progress.Completed.Add(1)
+						s.Progress.Total.Add(-1)
+						s.Progress.Skipped.Add(1)
 						continue
 					}
 
@@ -218,7 +219,8 @@ func StartSync(s *AppState, sync *config.SyncConfig, logOut chan string) {
 					_, err := os.Stat(destFilePath)
 					if err == nil {
 						println(s.Locale.Tr("sync.path-already-exists", fileRelative))
-						s.Progress.Completed.Add(1)
+						s.Progress.Total.Add(-1)
+						s.Progress.Skipped.Add(1)
 						continue
 					}
 
