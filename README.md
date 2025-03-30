@@ -7,7 +7,7 @@ Sync and convert your music library easily.
 No more manual copying and FLAC-to-MP3 conversion!
 ```
 
-[Downloads](https://github.com/termermc/your-loss-sync/releases) - [Features](#features)
+[⬇️ Downloads](https://github.com/termermc/your-loss-sync/releases) - [🏷️ Features](#features)
 
 ---
 
