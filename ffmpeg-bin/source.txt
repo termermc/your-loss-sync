@@ -1,0 +1,6 @@
+Windows binaries are from https://www.gyan.dev/ffmpeg/builds/
+FFmpeg and FFprobe: https://github.com/GyanD/codexffmpeg/releases/tag/7.1.1
+
+MacOS binaries are from https://evermeet.cx/ffmpeg/
+FFmpeg: https://evermeet.cx/ffmpeg/ffmpeg-119024-g226fcc7258.7z
+FFprobe: https://evermeet.cx/ffmpeg/ffprobe-119024-g226fcc7258.7z

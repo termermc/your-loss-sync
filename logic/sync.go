@@ -81,9 +81,43 @@ func StartSync(s *AppState, sync *config.SyncConfig, logOut chan string) {
 		return true
 	}
 
-	// TODO FFmpeg setting
+	// TODO FFmpeg setting to override this.
 	ffmpegBin := "ffmpeg"
 	ffprobeBin := "ffprobe"
+	if runtime.GOOS == "windows" {
+		ffmpegBin = "ffmpeg-win32-x64.exe"
+		ffprobeBin = "ffprobe-win32-x64.exe"
+	} else if runtime.GOOS == "darwin" {
+		ffmpegBin = "ffmpeg-darwin-arm64"
+		ffprobeBin = "ffprobe-darwin-arm64"
+	}
+
+	// Get path of the current executable and try to use bundled FFmpeg binaries
+	const bundledDir = "ffmpeg-bin"
+	exePath, err := os.Executable()
+	if err == nil {
+		bundleDir := filepath.Join(filepath.Dir(exePath), bundledDir)
+
+		oldFfmpegBin := ffmpegBin
+		oldFfprobeBin := ffprobeBin
+		ffmpegBin = filepath.Join(bundleDir, ffmpegBin)
+		ffprobeBin = filepath.Join(bundleDir, ffprobeBin)
+
+		if _, err := os.Stat(ffmpegBin); err != nil {
+			ffmpegBin = oldFfmpegBin
+			ffprobeBin = oldFfprobeBin
+
+			logOut <- s.Locale.Tr("sync.could-not-locate-bundled-ffmpeg-binaries")
+		}
+		if _, err := os.Stat(ffprobeBin); err != nil {
+			ffmpegBin = oldFfmpegBin
+			ffprobeBin = oldFfprobeBin
+
+			logOut <- s.Locale.Tr("sync.could-not-locate-bundled-ffmpeg-binaries")
+		}
+	} else {
+		logOut <- s.Locale.Tr("sync.could-not-find-executable-path", s.Locale.TrError(err))
+	}
 
 	logOut <- s.Locale.Tr("sync.scanning-source")
 
@@ -94,6 +128,17 @@ func StartSync(s *AppState, sync *config.SyncConfig, logOut chan string) {
 	destPath := sync.DestDir
 	if !strings.HasSuffix(destPath, "/") {
 		destPath += "/"
+	}
+
+	// Check if destination directory exists
+	if _, err := os.Stat(destPath); err != nil {
+		if os.IsNotExist(err) {
+			logOut <- s.Locale.Tr("sync.destination-not-found")
+			return
+		}
+
+		logOut <- s.Locale.Tr("sync.error-checking-destination-directory", s.Locale.TrError(err))
+		return
 	}
 
 	// Assume that transcoding a file maxes out a single CPU thread
@@ -270,7 +315,7 @@ func StartSync(s *AppState, sync *config.SyncConfig, logOut chan string) {
 	}
 
 	// Walk source directory
-	err := filepath.WalkDir(srcPath, func(path string, d fs.DirEntry, err error) error {
+	err = filepath.WalkDir(srcPath, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}

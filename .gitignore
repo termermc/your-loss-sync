@@ -24,8 +24,8 @@ go.work.sum
 # env file
 .env
 
-# FFmpeg binaries
-/ffmpeg-bin
+# Build
+/dist
 
 # Binaries
 /main

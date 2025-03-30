@@ -1,0 +1,14 @@
+Website = "https://github.com/termermc/your-loss-sync"
+
+[Details]
+  Icon = "Icon.png"
+  Name = "your-loss-sync"
+  ID = "io.github.your-loss-sync"
+  Version = "1.0.0"
+  Build = 5
+
+[LinuxAndBSD]
+  GenericName = "Your Loss! Sync"
+  Categories = ["Music", "AudioVideo"]
+  Comment = "Sync and convert your music library easily."
+  Keywords = ["music", "lossless", "flac", "mp3", "ffmpeg", "convert", "sync"]

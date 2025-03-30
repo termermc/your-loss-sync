@@ -1,6 +1,6 @@
 # Your Loss! Sync
 
-<img align="left" width="75" height="75" src="./icon.png">
+<img align="left" width="75" height="75" src="./Icon.png">
 
 ```
 Sync and convert your music library easily.
@@ -64,6 +64,23 @@ Then, run the `build-linux.sh` script:
 The application will be built and packaged as `Your Loss! Sync.tar.xz` in the project's main directory.
 
 ## Windows
+
+### Cross-Compiling From Linux
+
+Requirements:
+ - Go 1.23+
+ - Docker (installed and running globally)
+ - `sudo` and privileges to use it
+ - [fyne-cross](https://github.com/fyne-io/fyne-cross)
+ - The [zip](https://linux.die.net/man/1/zip) command
+
+Run the `build-windows-from-linux.sh` script:
+
+```shell
+./script/build-windows-from-linux.sh
+```
+
+The application will be built and packaged as `Your Loss!
 
 TODO go build
 

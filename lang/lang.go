@@ -468,6 +468,20 @@ var Translations = map[string]map[string]string{
 		"it-it":  "Transcodificando $1",
 		"zh-cn":  "正在转码 $1",
 	},
+	"sync.destination-not-found": {
+		"en-us":  "Destination directory not found, is it on a disconnected drive?",
+		"es-419": "Directorio de destino no encontrado, ¿está en una unidad desconectada?",
+		"fr-fr":  "Le répertoire de destination n'a pas été trouvé, est-il sur un lecteur déconnecté ?",
+		"it-it":  "Cartella di destinazione non trovata, è presente su un disco disconnesso?",
+		"zh-cn":  "目标目录未找到，是否在断开的驱动器上？",
+	},
+	"sync.error-checking-destination-directory": {
+		"en-us":  "Error checking destination directory, is your computer allowed to access it? Error: $1",
+		"es-419": "Error al comprobar el directorio de destino, ¿está permitido el acceso a él?",
+		"fr-fr":  "Erreur lors de la vérification du répertoire de destination, est-ce que votre ordinateur est autorisé à y accéder ?",
+		"it-it":  "Errore durante il controllo della cartella di destinazione, è consentito l'accesso a essa?",
+		"zh-cn":  "检查目标目录时出错，您的计算机是否允许访问它？",
+	},
 	"sync.path-already-exists": {
 		"en-us":  "Path $1 already exists, skipping",
 		"es-419": "La ruta $1 ya existe, se omite",
@@ -481,6 +495,20 @@ var Translations = map[string]map[string]string{
 		"fr-fr":  "Erreur lors du traitement du chemin \"$1\" : $2",
 		"it-it":  "Errore durante l'elaborazione del percorso \"$1\": $2",
 		"zh-cn":  "处理路径“$1”时出错：$2",
+	},
+	"sync.could-not-find-executable-path": {
+		"en-us":  "Could not find executable path, therefore cannot locate bundled FFmpeg binaries. Error: $1",
+		"es-419": "No se pudo encontrar la ruta del ejecutable, por lo tanto, no se pueden localizar los binarios FFmpeg empaquetados. Error: $1",
+		"fr-fr":  "Impossible de trouver le chemin d'accès de l'exécutable, par conséquent, les binaires FFmpeg empaquetés ne peuvent pas être localisés. Erreur : $1",
+		"it-it":  "Impossibile trovare il percorso dell'eseguibile, pertanto, non è possibile localizzare i binari FFmpeg bundlati. Errore: $1",
+		"zh-cn":  "无法找到可执行文件路径，因此无法定位包装的 FFmpeg 二进制文件。错误：$1",
+	},
+	"sync.could-not-locate-bundled-ffmpeg-binaries": {
+		"en-us":  "Could not locate bundled FFmpeg binaries, falling back to system-wide FFmpeg installation. Conversion may fail!",
+		"es-419": "No se pudieron localizar los binarios FFmpeg empaquetados, regresando a la instalación global de FFmpeg del sistema. ¡La conversión puede fallar!",
+		"fr-fr":  "Impossible de localiser les binaires FFmpeg empaquetés, retour à l'installation globale FFmpeg du système. La conversion peut échouer !",
+		"it-it":  "Impossibile localizzare i binari FFmpeg bundlati, fallendo sull'installazione globale di FFmpeg del sistema. La conversione potrebbe fallire!",
+		"zh-cn":  "无法定位包装的 FFmpeg 二进制文件，正在回退到系统全局的 FFmpeg 安装。转换可能会失败！",
 	},
 	"sync.done": {
 		"en-us":  "Done (total: $1, completed: $2, skipped: $3, failed: $4)",
