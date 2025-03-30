@@ -1,10 +1,13 @@
 # Your Loss! Sync
 
-<img align="left" width="50" height="50" src="./icon.png">
+<img align="left" width="75" height="75" src="./icon.png">
 
 ```
 Sync and convert your music library easily.
+No more manual copying and FLAC-to-MP3 conversion!
 ```
+
+[Downloads](https://github.com/termermc/your-loss-sync/releases) - [Features](#features)
 
 ---
 
