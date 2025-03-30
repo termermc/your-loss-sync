@@ -24,6 +24,16 @@ don't support FLAC, so I previously needed to manually convert my FLACs to MP3s 
 
 You can download the latest release for Windows, Mac and Linux from the [releases page](https://github.com/termermc/your-loss-sync/releases).
 
+# Features
+
+ - Sync music to a destination
+ - Convert music while syncing (supports a variety of formats)
+ - Automatically detect new music
+ - Skip files larger than a certain size (useful when the destination is on a FAT32 filesystem)
+ - Normalize and sanitize file names to support all file systems
+ - Reduce size of destination files by reducing bitrate
+ - Re-encode files for a lower bitrate
+
 # Building
 
 ## Linux
