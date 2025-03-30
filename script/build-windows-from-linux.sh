@@ -27,6 +27,7 @@ zip -r dist/windows-arm64/your-loss-sync.exe.zip ffmpeg-bin/
 mv dist/windows-386/your-loss-sync.exe.zip dist/your-loss-sync-windows-386.zip
 mv dist/windows-amd64/your-loss-sync.exe.zip dist/your-loss-sync-windows-amd64.zip
 mv dist/windows-arm64/your-loss-sync.exe.zip dist/your-loss-sync-windows-arm64.zip
+rm -rf dist/yls-dist || true
 rm -r dist/windows-*
 
 echo "Built files available in $ROOT_DIR/dist"

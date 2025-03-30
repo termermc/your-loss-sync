@@ -61,7 +61,9 @@ Then, run the `build-linux.sh` script:
 ./script/build-linux.sh
 ```
 
-The application will be built and packaged as `Your Loss! Sync.tar.xz` in the project's main directory.
+The package will be available in the `dist` directory.
+
+Once extracted, the package can be installed with `make`.
 
 ## Windows
 
@@ -80,9 +82,11 @@ Run the `build-windows-from-linux.sh` script:
 ./script/build-windows-from-linux.sh
 ```
 
-The application will be built and packaged as `Your Loss!
+The packages for supported architectures will be available in the `dist` directory.
 
-TODO go build
+### From Windows
+
+TODO
 
 ## MacOS
 
