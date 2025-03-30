@@ -1,5 +1,12 @@
 # Your Loss! Sync
-Sync and convert your music library easily
+
+<img align="left" width="50" height="50" src="./icon.png">
+
+```
+Sync and convert your music library easily.
+```
+
+---
 
 # About
 
