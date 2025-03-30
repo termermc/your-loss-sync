@@ -29,4 +29,9 @@ go.work.sum
 
 # Binaries
 /main
+/main.exe
 /your-loss-sync
+/your-loss-sync.exe
+
+# Packages
+*.tar.*

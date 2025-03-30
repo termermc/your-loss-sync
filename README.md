@@ -48,10 +48,20 @@ You can download the latest release for Windows, Mac and Linux from the [release
 
 ## Linux
 
-You need some GTK dependencies.
-TODO Figure out which ones
+First, install the Fyne CLI and required dependencies.
+Follow the `Prerequisites` section on Fyne's [Getting Started](https://docs.fyne.io/started/) guide, then run
 
-Run `go build -o your-loss-sync cmd/main.go`
+```shell
+go install fyne.io/fyne/v2/cmd/fyne@latest
+```
+
+Then, run the `build-linux.sh` script:
+
+```shell
+./script/build-linux.sh
+```
+
+The application will be built and packaged as `Your Loss! Sync.tar.xz` in the project's main directory.
 
 ## Windows
 
