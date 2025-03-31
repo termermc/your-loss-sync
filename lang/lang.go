@@ -191,6 +191,20 @@ var Translations = map[string]map[string]string{
 		"it-it":  "Selezionare lingua",
 		"zh-cn":  "选择语言",
 	},
+	"setup.setup-complete": {
+		"en-us":  "Setup Complete",
+		"es-419": "Configuración Completa",
+		"fr-fr":  "Configuration terminée",
+		"it-it":  "Configurazione Completata",
+		"zh-cn":  "设置完成",
+	},
+	"setup.setup-complete.description": {
+		"en-us":  "Setup complete, please restart the application.",
+		"es-419": "Configuración completa, reinicie la aplicación.",
+		"fr-fr":  "Configuration terminée, veuillez redémarrer l'application.",
+		"it-it":  "Configurazione completata, riavviare l'applicazione.",
+		"zh-cn":  "设置完成，请重新启动应用程序。",
+	},
 
 	"tab.syncs.create": {
 		"en-us":  "Create Sync",

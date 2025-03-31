@@ -4,8 +4,8 @@ Website = "https://github.com/termermc/your-loss-sync"
   Icon = "Icon.png"
   Name = "your-loss-sync"
   ID = "io.github.your-loss-sync"
-  Version = "1.0.0"
-  Build = 8
+  Version = "0.1.0"
+  Build = 10
 
 [LinuxAndBSD]
   GenericName = "Your Loss! Sync"

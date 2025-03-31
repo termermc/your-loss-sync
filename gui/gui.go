@@ -72,11 +72,13 @@ func (g Gui) Run() {
 		cfgPath, err := config.GetFilePath()
 		checkErr(err)
 
+		var setupRes setup.Result
+
 		// Run the setup if the config file doesn't exist.
 		_, err = os.Stat(cfgPath)
 		if err != nil {
 			if errors.Is(err, os.ErrNotExist) {
-				setupRes := setup.ShowSetup(g.App)
+				setupRes = setup.ShowSetup(g.App)
 
 				if !setupRes.Completed {
 					g.App.Quit()
@@ -101,6 +103,18 @@ func (g Gui) Run() {
 
 				err = json.SerializeToJson(cfg, newCfgFile)
 				checkErr(err)
+
+				l := lang.NewLocale(setupRes.LangCode)
+				dialogCloseChan := make(chan struct{})
+				info := dialog.NewInformation(l.Tr("setup.setup-complete"), l.Tr("setup.setup-complete.description"), setupRes.DialogWindow)
+				info.Show()
+				info.SetOnClosed(func() {
+					close(dialogCloseChan)
+				})
+				<-dialogCloseChan
+				g.App.Quit()
+				os.Exit(0)
+				return
 			} else {
 				checkErr(err)
 			}

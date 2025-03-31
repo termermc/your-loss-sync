@@ -9,12 +9,15 @@ import (
 
 // Result is the result of the setup process.
 type Result struct {
-	Completed bool
-	LangCode  string
+	Completed    bool
+	LangCode     string
+	DialogWindow fyne.Window
 }
 
 // ShowSetup shows the setup window and returns the result.
 func ShowSetup(app fyne.App) Result {
+	alreadyCompleted := false
+
 	resChan := make(chan Result)
 	var locale lang.Locale
 
@@ -25,11 +28,11 @@ func ShowSetup(app fyne.App) Result {
 	langLabel := widget.NewLabel("")
 	confirmButton := widget.NewButton("", func() {
 		resChan <- Result{
-			Completed: true,
-			LangCode:  locale.LangCode,
+			Completed:    true,
+			LangCode:     locale.LangCode,
+			DialogWindow: w,
 		}
-
-		w.Close()
+		alreadyCompleted = true
 	})
 
 	setLocale := func(langCode string) {
@@ -61,11 +64,17 @@ func ShowSetup(app fyne.App) Result {
 	)
 
 	w.SetOnClosed(func() {
+		if alreadyCompleted {
+			return
+		}
+
 		resChan <- Result{
-			Completed: false,
+			Completed:    false,
+			DialogWindow: w,
 		}
 	})
 
 	w.Show()
-	return <-resChan
+	res := <-resChan
+	return res
 }

@@ -27,9 +27,9 @@ func doFfprobe(bin string, filePath string) (ffprobeResult, error) {
 		bin,
 		"-print_format", "json",
 		"-show_streams",
-		"-threads", "1",
 		filePath,
 	)
+	cmd.SysProcAttr = GetFFmpegSysProcAttr()
 	out, err := cmd.Output()
 	if err != nil {
 		return ffprobeResult{}, err
@@ -239,9 +239,11 @@ func StartSync(s *AppState, sync *config.SyncConfig, logOut chan string) {
 							"-c:v", "copy",
 							"-c:a", prof.OutputFormat.FfmpegEncoder,
 							"-b:a", strconv.Itoa(int(prof.OutputFormat.SuggestedBitrate)),
+							"-threads", "1",
 							destTmpPath,
 							"-y",
 						)
+						cmd.SysProcAttr = GetFFmpegSysProcAttr()
 						err = cmd.Run()
 						if checkErr(fileRelative, err) {
 							_ = os.Remove(destTmpPath)
